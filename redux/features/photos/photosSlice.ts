@@ -2,27 +2,40 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 import jph from "../../../api/JPH";
 
-import { Photo } from "../../../lib/types";
+import { LoadingState, Photo } from "../../../lib/types";
 
 export interface PhotosState {
+  status: LoadingState.idle | LoadingState.loading | LoadingState.failed;
   photos: Photo[];
   selectedAlbumPhotos: Photo[];
   selectedAlbumId: number;
-  status: string;
+  error: {
+    msg: string;
+  };
 }
 
 const initialState: PhotosState = {
   photos: [],
   selectedAlbumPhotos: [],
   selectedAlbumId: undefined,
-  status: "idle",
+  status: LoadingState.idle,
+  error: {
+    msg: undefined,
+  },
 };
 
 export const retrievePhotos = createAsyncThunk(
   "photos/retrievePhotos",
-  async () => {
-    const { data } = await jph.get(`photos`);
-    return data;
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await jph.get(`photos`);
+      return data;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
@@ -40,22 +53,23 @@ export const photosSlice = createSlice({
       );
     },
     addPhoto(state, action: PayloadAction<Photo>) {
-      state.photos.push(action.payload);
+      state.photos.unshift(action.payload);
     },
   },
   extraReducers: {
     //@ts-ignore
     [retrievePhotos.pending]: (state) => {
-      state.status = "loading";
+      state.status = LoadingState.loading;
     },
     //@ts-ignore
     [retrievePhotos.fulfilled]: (state, { payload }) => {
+      state.status = LoadingState.idle;
       state.photos.push(...payload);
-      state.status = "idle";
     },
     //@ts-ignore
-    [retrievePhotos.rejected]: (state) => {
-      state.status = "failed";
+    [retrievePhotos.rejected]: (state, { payload }) => {
+      state.status = LoadingState.failed;
+      state.error.msg = payload;
     },
   },
 });

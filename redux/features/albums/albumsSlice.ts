@@ -2,25 +2,38 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 import jph from "../../../api/JPH";
 
-import { Album } from "../../../lib/types";
+import { Album, LoadingState } from "../../../lib/types";
 
 export interface AlbumsState {
+  status: LoadingState.idle | LoadingState.loading | LoadingState.failed;
   albums: Album[];
   selectedAlbum: Album;
-  status: string;
+  error: {
+    msg: string;
+  };
 }
 
 const initialState: AlbumsState = {
   albums: [],
   selectedAlbum: undefined,
-  status: "idle",
+  status: LoadingState.idle,
+  error: {
+    msg: undefined,
+  },
 };
 
 export const retrieveAlbums = createAsyncThunk(
   "albums/retrieveAlbums",
-  async (limit: number) => {
-    const { data } = await jph.get(`albums?_limit=${limit}`);
-    return data;
+  async (limit: number, { rejectWithValue }) => {
+    try {
+      const { data } = await jph.get(`albums?_limit=${limit}`);
+      return data;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 
@@ -39,17 +52,18 @@ export const albumsSlice = createSlice({
   },
   extraReducers: {
     //@ts-ignore
-    [retrieveAlbums.pending]: (state, action) => {
-      state.status = "loading";
+    [retrieveAlbums.pending]: (state) => {
+      state.status = LoadingState.loading;
     },
     //@ts-ignore
     [retrieveAlbums.fulfilled]: (state, { payload }) => {
+      state.status = LoadingState.idle;
       state.albums = payload;
-      state.status = "idle";
     },
     //@ts-ignore
-    [retrieveAlbums.rejected]: (state, action) => {
-      state.status = "failed";
+    [retrieveAlbums.rejected]: (state, action: PayloadAction<string>) => {
+      state.status = LoadingState.failed;
+      state.error.msg = action.payload;
     },
   },
 });

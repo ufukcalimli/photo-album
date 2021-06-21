@@ -1,8 +1,7 @@
-import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { addPhoto, retrievePhotos } from "../redux/features/photos/photosSlice";
+import { useAppDispatch } from "../redux/hooks";
+import { addPhoto } from "../redux/features/photos/photosSlice";
 import { addAlbum } from "../redux/features/albums/albumsSlice";
 
 type Inputs = {

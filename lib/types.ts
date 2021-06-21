@@ -10,3 +10,9 @@ export interface Album {
   id: number;
   title: string;
 }
+
+export enum LoadingState {
+  idle = "idle",
+  loading = "loading",
+  failed = "failed",
+}

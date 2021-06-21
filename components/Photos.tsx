@@ -3,8 +3,10 @@ import Image from "next/image";
 
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getPhotosByAlbumId } from "../redux/features/photos/photosSlice";
+import { LoadingState } from "../lib/types";
 
 function Photos() {
+  const status = useAppSelector((state) => state.photos.status);
   const selectedAlbumPhotos = useAppSelector(
     (state) => state.photos.selectedAlbumPhotos
   );
@@ -17,14 +19,18 @@ function Photos() {
 
   return (
     <div className="w-100 pl-4">
-      {selectedAlbumPhotos.map((p) => (
-        <div key={p.id} className="w-50 flex flex-wrap pl-4 mb-4">
-          <div className="h-64 w-96 mr-6 relative">
-            <Image src={p.url} layout="fill" />
+      {status === LoadingState.loading ? (
+        <div>Loading...</div>
+      ) : (
+        selectedAlbumPhotos.map((p) => (
+          <div key={p.id} className="w-50 flex flex-wrap pl-4 mb-4">
+            <div className="h-64 w-96 mr-6 relative">
+              <Image src={p.url} layout="fill" />
+            </div>
+            {p.title}
           </div>
-          {p.title}
-        </div>
-      ))}
+        ))
+      )}
     </div>
   );
 }
