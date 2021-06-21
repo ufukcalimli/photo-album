@@ -1,30 +1,42 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+
+import jph from "../../../api/JPH";
+
 import { Album } from "../../../lib/types";
-import { RootState } from "../../store";
 
 export interface AlbumsState {
   albums: Album[];
+  selectedAlbum: Album;
   status: string;
 }
 
 const initialState: AlbumsState = {
   albums: [],
+  selectedAlbum: undefined,
   status: "idle",
 };
 
-const BASE_URL = process.env.NEXT_PUBLIC_PLACEHOLDER_BASEURL;
-
 export const retrieveAlbums = createAsyncThunk(
   "albums/retrieveAlbums",
-  async () => {
-    return fetch(`${BASE_URL}/albums`).then((res) => res.json());
+  async (limit: number) => {
+    const { data } = await jph.get(`albums?_limit=${limit}`);
+    return data;
   }
 );
 
 export const albumsSlice = createSlice({
   name: "albumsSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    addAlbum(state, action: PayloadAction<Album>) {
+      const hasValue = state.albums.some(
+        (e) => e.title === action.payload.title
+      );
+      if (!hasValue) {
+        state.albums.push(action.payload);
+      }
+    },
+  },
   extraReducers: {
     //@ts-ignore
     [retrieveAlbums.pending]: (state, action) => {
@@ -32,7 +44,6 @@ export const albumsSlice = createSlice({
     },
     //@ts-ignore
     [retrieveAlbums.fulfilled]: (state, { payload }) => {
-      // Todo: check if payload has albums array, find out where to put them
       state.albums = payload;
       state.status = "idle";
     },
@@ -43,6 +54,6 @@ export const albumsSlice = createSlice({
   },
 });
 
-export const selectAlbum = (state: RootState) => state.albums;
+export const { addAlbum } = albumsSlice.actions;
 
 export default albumsSlice.reducer;

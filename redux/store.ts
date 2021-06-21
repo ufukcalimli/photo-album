@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import albumsReducer from "../app/features/albums/albumsSlice";
+import albumsReducer from "./features/albums/albumsSlice";
+import photosReducer from "./features/photos/photosSlice";
 
 export const store = configureStore({
   reducer: {
     albums: albumsReducer,
+    photos: photosReducer,
   },
 });
 
