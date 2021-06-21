@@ -5,8 +5,11 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getPhotosByAlbumId } from "../redux/features/photos/photosSlice";
 import { LoadingState } from "../lib/types";
 
+import ErrorBox from "./ErrorBox";
+
 function Photos() {
   const status = useAppSelector((state) => state.photos.status);
+  const error = useAppSelector((state) => state.photos.error);
   const selectedAlbumPhotos = useAppSelector(
     (state) => state.photos.selectedAlbumPhotos
   );
@@ -16,6 +19,10 @@ function Photos() {
   useEffect(() => {
     dispatch(getPhotosByAlbumId());
   }, [albumId]);
+
+  if (error) {
+    return <ErrorBox msg={error.msg} />;
+  }
 
   return (
     <div className="w-100 pl-4">

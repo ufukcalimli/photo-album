@@ -4,6 +4,8 @@ import { useAppDispatch } from "../redux/hooks";
 import { addPhoto } from "../redux/features/photos/photosSlice";
 import { addAlbum } from "../redux/features/albums/albumsSlice";
 
+import ErrorBox from "./ErrorBox";
+
 type Inputs = {
   album: {
     title: string;
@@ -27,7 +29,6 @@ function NewItemForm() {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     let albumId = Math.floor(Math.random() * 100);
-    // dispatch(retrievePhotos(albumId));
     data.album.id = albumId;
     data.photo.albumId = albumId;
     dispatch(addAlbum(data.album));
@@ -47,6 +48,9 @@ function NewItemForm() {
               id="title"
               placeholder="lorem ipsum dolor sit amet"
             />
+            {errors.album?.title.type === "required" ? (
+              <ErrorBox msg="Album title is required" />
+            ) : null}
           </label>
           <label className="mb-5">
             <span className="mr-2">Image Title</span>
@@ -56,6 +60,12 @@ function NewItemForm() {
               id="title"
               placeholder="lorem ipsum dolor sit amet"
             />
+            {errors.photo?.title.type === "required" ? (
+              <ErrorBox msg="Photo title is required" />
+            ) : null}
+            {errors.photo?.title.type === "maxLength" ? (
+              <ErrorBox msg="Photo title can be maximum 20 characters" />
+            ) : null}
           </label>
           <label className="mb-5">
             <span className="mr-2">Image URL</span>
@@ -66,6 +76,9 @@ function NewItemForm() {
               placeholder="https://www..."
               //   defaultValue="https://pbs.twimg.com/profile_images/949787136030539782/LnRrYf6e.jpg"
             />
+            {errors.photo?.url.type === "required" ? (
+              <ErrorBox msg="Photo URL is required" />
+            ) : null}
           </label>
         </div>
         <button type="submit" className="border border-gray-500 p-2 rounded">

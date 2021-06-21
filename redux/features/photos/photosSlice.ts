@@ -26,16 +26,9 @@ const initialState: PhotosState = {
 
 export const retrievePhotos = createAsyncThunk(
   "photos/retrievePhotos",
-  async (_, { rejectWithValue }) => {
-    try {
-      const { data } = await jph.get(`photos`);
-      return data;
-    } catch (err) {
-      if (!err.response) {
-        throw err;
-      }
-      return rejectWithValue(err.response.data);
-    }
+  async () => {
+    const { data } = await jph.get(`photos`);
+    return data;
   }
 );
 
@@ -67,9 +60,9 @@ export const photosSlice = createSlice({
       state.photos.push(...payload);
     },
     //@ts-ignore
-    [retrievePhotos.rejected]: (state, { payload }) => {
+    [retrievePhotos.rejected]: (state, { error }) => {
       state.status = LoadingState.failed;
-      state.error.msg = payload;
+      state.error.msg = error.message;
     },
   },
 });

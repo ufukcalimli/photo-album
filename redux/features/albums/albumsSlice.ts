@@ -24,16 +24,9 @@ const initialState: AlbumsState = {
 
 export const retrieveAlbums = createAsyncThunk(
   "albums/retrieveAlbums",
-  async (limit: number, { rejectWithValue }) => {
-    try {
-      const { data } = await jph.get(`albums?_limit=${limit}`);
-      return data;
-    } catch (err) {
-      if (!err.response) {
-        throw err;
-      }
-      return rejectWithValue(err.response.data);
-    }
+  async (limit: number) => {
+    const { data } = await jph.get(`albums?_limit=${limit}`);
+    return data;
   }
 );
 
@@ -61,9 +54,9 @@ export const albumsSlice = createSlice({
       state.albums = payload;
     },
     //@ts-ignore
-    [retrieveAlbums.rejected]: (state, action: PayloadAction<string>) => {
+    [retrieveAlbums.rejected]: (state, { error }) => {
       state.status = LoadingState.failed;
-      state.error.msg = action.payload;
+      state.error.msg = error.message;
     },
   },
 });

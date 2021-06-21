@@ -1,13 +1,16 @@
+import { LoadingState } from "../lib/types";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
   getPhotosByAlbumId,
   setAlbumId,
 } from "../redux/features/photos/photosSlice";
-import { LoadingState } from "../lib/types";
+
+import ErrorBox from "./ErrorBox";
 
 function AlbumsList() {
   const status = useAppSelector((state) => state.albums.status);
   const albums = useAppSelector((state) => state.albums.albums);
+  const error = useAppSelector((state) => state.albums.error);
   const dispatch = useAppDispatch();
 
   const handleClick = (id: number) => {
@@ -16,6 +19,10 @@ function AlbumsList() {
       dispatch(getPhotosByAlbumId());
     }
   };
+
+  if (error) {
+    return <ErrorBox msg={error.msg} />;
+  }
 
   return (
     <aside className="min-h-full max-w-xs flex-none flex mr-4 ">
