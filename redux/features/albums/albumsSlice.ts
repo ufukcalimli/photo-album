@@ -18,7 +18,7 @@ const initialState: AlbumsState = {
   selectedAlbum: undefined,
   status: LoadingState.idle,
   error: {
-    msg: undefined,
+    msg: null,
   },
 };
 

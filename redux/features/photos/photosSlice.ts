@@ -20,7 +20,7 @@ const initialState: PhotosState = {
   selectedAlbumId: undefined,
   status: LoadingState.idle,
   error: {
-    msg: undefined,
+    msg: null,
   },
 };
 

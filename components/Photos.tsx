@@ -20,7 +20,7 @@ function Photos() {
     dispatch(getPhotosByAlbumId());
   }, [albumId]);
 
-  if (error) {
+  if (error.msg !== null) {
     return <ErrorBox msg={error.msg} />;
   }
 

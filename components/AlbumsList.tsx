@@ -20,7 +20,7 @@ function AlbumsList() {
     }
   };
 
-  if (error) {
+  if (error.msg !== null) {
     return <ErrorBox msg={error.msg} />;
   }
 
