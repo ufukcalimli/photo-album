@@ -25,13 +25,13 @@ function AlbumsList() {
   }
 
   return (
-    <aside className="min-h-full max-w-xs flex-none flex mr-4 ">
+    <aside className="w-full">
       <ul>
         {status === LoadingState.loading ? (
           <div>Loading...</div>
         ) : (
           albums.map((album) => (
-            <li key={album.id}>
+            <li key={album.id} className="mb-2 text-right py-1 pr-4">
               <button onClick={() => handleClick(album.id)}>
                 {album.title}
               </button>

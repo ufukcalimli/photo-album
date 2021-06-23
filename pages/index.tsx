@@ -1,15 +1,14 @@
 import { useEffect } from "react";
-
 import Head from "next/head";
 
 import { useAppDispatch } from "../redux/hooks";
 import { retrievePhotos } from "../redux/features/photos/photosSlice";
+import { retrieveAlbums } from "../redux/features/albums/albumsSlice";
 
 import PageTitle from "../components/PageTitle";
 import AlbumsList from "../components/AlbumsList";
 import Photos from "../components/Photos";
 import NewItemForm from "../components/NewItemForm";
-import { retrieveAlbums } from "../redux/features/albums/albumsSlice";
 
 function Home() {
   const dispatch = useAppDispatch();
@@ -31,10 +30,12 @@ function Home() {
       </Head>
 
       <PageTitle />
-      <main className="container grid grid-cols-3 gap-4 min-w-full">
+      <main className="container min-w-full">
         <NewItemForm />
-        <AlbumsList />
-        <Photos />
+        <div className="container grid grid-cols-2 gap-4 min-w-full">
+          <AlbumsList />
+          <Photos />
+        </div>
       </main>
     </div>
   );

@@ -37,10 +37,10 @@ function NewItemForm() {
   };
 
   return (
-    <div className="p-4 min-w-full">
+    <div className="pb-4 min-w-full">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-wrap">
-          <label className="mb-5">
+        <div className="flex flex-row justify-center">
+          <label className="mr-5 flex flex-col">
             <span className="mr-2">Album Title</span>
             <input
               {...register("album.title", { required: true, maxLength: 20 })}
@@ -52,7 +52,7 @@ function NewItemForm() {
               <ErrorBox msg="Album title is required" />
             ) : null}
           </label>
-          <label className="mb-5">
+          <label className="mr-5 flex flex-col">
             <span className="mr-2">Image Title</span>
             <input
               {...register("photo.title", { required: true, maxLength: 20 })}
@@ -67,7 +67,7 @@ function NewItemForm() {
               <ErrorBox msg="Photo title can be maximum 20 characters" />
             ) : null}
           </label>
-          <label className="mb-5">
+          <label className="mr-5 flex flex-col">
             <span className="mr-2">Image URL</span>
             <input
               {...register("photo.url", { required: true })}
@@ -80,10 +80,13 @@ function NewItemForm() {
               <ErrorBox msg="Photo URL is required" />
             ) : null}
           </label>
+          <button
+            type="submit"
+            className="border border-gray-500 px-2 py-0 rounded"
+          >
+            Save Album
+          </button>
         </div>
-        <button type="submit" className="border border-gray-500 p-2 rounded">
-          Save Album
-        </button>
       </form>
     </div>
   );

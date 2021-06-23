@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-import jph from "../../../api/JPH";
+import jph from "../../../pages/api/JPH";
 
 import { LoadingState, Photo } from "../../../lib/types";
 
