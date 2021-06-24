@@ -1,0 +1,19 @@
+.wrapper {
+  @apply pb-4 min-w-full;
+}
+
+.flexCentered {
+  @apply flex flex-row justify-center;
+}
+
+.label {
+  @apply mr-5 flex flex-col;
+}
+
+.labelSpan {
+  @apply mr-2;
+}
+
+.button {
+  @apply border border-gray-500 px-2 py-0 rounded;
+}

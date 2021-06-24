@@ -1,0 +1,15 @@
+.wrapper {
+  @apply w-full;
+}
+
+.itemWrapper {
+  @apply flex flex-wrap;
+}
+
+.photoWrapper {
+  @apply h-32 w-32 relative mb-4;
+}
+
+.title {
+  @apply pl-5 self-center;
+}

@@ -1,11 +1,13 @@
-import { LoadingState } from "../lib/types";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { LoadingState } from "../../lib/types";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   getPhotosByAlbumId,
   setAlbumId,
-} from "../redux/features/photos/photosSlice";
+} from "../../redux/features/photos/photosSlice";
 
-import ErrorBox from "./ErrorBox";
+import ErrorBox from "../ErrorBox";
+
+import styles from "./AlbumsList.module.css";
 
 function AlbumsList() {
   const status = useAppSelector((state) => state.albums.status);
@@ -25,13 +27,13 @@ function AlbumsList() {
   }
 
   return (
-    <aside className="w-full">
+    <aside className={styles.wrapper}>
       <ul>
         {status === LoadingState.loading ? (
           <div>Loading...</div>
         ) : (
           albums.map((album) => (
-            <li key={album.id} className="mb-2 text-right py-1 pr-4">
+            <li key={album.id} className={styles.listItem}>
               <button onClick={() => handleClick(album.id)}>
                 {album.title}
               </button>

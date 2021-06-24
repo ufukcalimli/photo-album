@@ -1,10 +1,12 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { useAppDispatch } from "../redux/hooks";
-import { addPhoto } from "../redux/features/photos/photosSlice";
-import { addAlbum } from "../redux/features/albums/albumsSlice";
+import { useAppDispatch } from "../../redux/hooks";
+import { addPhoto } from "../../redux/features/photos/photosSlice";
+import { addAlbum } from "../../redux/features/albums/albumsSlice";
 
-import ErrorBox from "./ErrorBox";
+import ErrorBox from "../ErrorBox";
+
+import styles from "./NewItemForm.module.css";
 
 type Inputs = {
   album: {
@@ -37,11 +39,11 @@ function NewItemForm() {
   };
 
   return (
-    <div className="pb-4 min-w-full">
+    <div className={styles.wrapper}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-row justify-center">
-          <label className="mr-5 flex flex-col">
-            <span className="mr-2">Album Title</span>
+        <div className={styles.flexCentered}>
+          <label className={styles.label}>
+            <span className={styles.labelSpan}>Album Title</span>
             <input
               {...register("album.title", { required: true, maxLength: 20 })}
               type="text"
@@ -52,8 +54,8 @@ function NewItemForm() {
               <ErrorBox msg="Album title is required" />
             ) : null}
           </label>
-          <label className="mr-5 flex flex-col">
-            <span className="mr-2">Image Title</span>
+          <label className={styles.label}>
+            <span className={styles.labelSpan}>Image Title</span>
             <input
               {...register("photo.title", { required: true, maxLength: 20 })}
               type="text"
@@ -67,8 +69,8 @@ function NewItemForm() {
               <ErrorBox msg="Photo title can be maximum 20 characters" />
             ) : null}
           </label>
-          <label className="mr-5 flex flex-col">
-            <span className="mr-2">Image URL</span>
+          <label className={styles.label}>
+            <span className={styles.labelSpan}>Image URL</span>
             <input
               {...register("photo.url", { required: true })}
               type="text"
@@ -80,10 +82,7 @@ function NewItemForm() {
               <ErrorBox msg="Photo URL is required" />
             ) : null}
           </label>
-          <button
-            type="submit"
-            className="border border-gray-500 px-2 py-0 rounded"
-          >
+          <button type="submit" className={styles.button}>
             Save Album
           </button>
         </div>

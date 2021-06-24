@@ -1,0 +1,7 @@
+.wrapper {
+  @apply min-w-full py-2 flex justify-start;
+}
+
+.message {
+  @apply text-red-700 text-sm;
+}

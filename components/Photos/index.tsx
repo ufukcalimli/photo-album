@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import Image from "next/image";
 
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { getPhotosByAlbumId } from "../redux/features/photos/photosSlice";
-import { LoadingState } from "../lib/types";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { getPhotosByAlbumId } from "../../redux/features/photos/photosSlice";
+import { LoadingState } from "../../lib/types";
 
-import ErrorBox from "./ErrorBox";
+import ErrorBox from "../ErrorBox";
+
+import styles from "./Photos.module.css";
 
 function Photos() {
   const status = useAppSelector((state) => state.photos.status);
@@ -25,16 +27,16 @@ function Photos() {
   }
 
   return (
-    <div className="w-full">
+    <div className={styles.wrapper}>
       {status === LoadingState.loading ? (
         <div>Loading...</div>
       ) : (
         selectedAlbumPhotos.map((p) => (
-          <div key={p.id} className="flex flex-wrap">
-            <div className="h-32 w-32 relative mb-4">
+          <div key={p.id} className={styles.itemWrapper}>
+            <div className={styles.photoWrapper}>
               <Image src={p.url} layout="fill" />
             </div>
-            <p className="pl-5 self-center">{p.title}</p>
+            <p className={styles.title}>{p.title}</p>
           </div>
         ))
       )}

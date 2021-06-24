@@ -1,0 +1,7 @@
+.wrapper {
+  @apply min-w-full flex justify-start;
+}
+
+.title {
+  @apply m-5 p-2 text-4xl;
+}

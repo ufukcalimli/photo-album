@@ -1,0 +1,7 @@
+.wrapper {
+  @apply w-full;
+}
+
+.listItem {
+  @apply mb-2 text-right py-1 pr-4;
+}
