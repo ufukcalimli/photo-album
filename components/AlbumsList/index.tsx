@@ -3,6 +3,8 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   getPhotosByAlbumId,
   setAlbumId,
+  retrievePhotos,
+  incrementCall,
 } from "../../redux/features/photos/photosSlice";
 
 import ErrorBox from "../ErrorBox";
@@ -22,12 +24,18 @@ function AlbumsList() {
     }
   };
 
+  const refreshPage = async () => {
+    await dispatch(retrievePhotos());
+    dispatch(incrementCall());
+  };
+
   if (error.msg !== null) {
     return <ErrorBox msg={error.msg} />;
   }
 
   return (
     <aside className={styles.wrapper}>
+      <button onClick={refreshPage}>Refresh</button>
       <ul>
         {status === LoadingState.loading ? (
           <div>Loading...</div>

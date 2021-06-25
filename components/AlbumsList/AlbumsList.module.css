@@ -2,6 +2,6 @@
   @apply w-full;
 }
 
-.listItem {
+.list-item {
   @apply mb-2 text-right py-1 pr-4;
 }

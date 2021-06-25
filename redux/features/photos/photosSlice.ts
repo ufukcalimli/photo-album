@@ -9,6 +9,7 @@ export interface PhotosState {
   photos: Photo[];
   selectedAlbumPhotos: Photo[];
   selectedAlbumId: number;
+  callCount: number;
   error: {
     msg: string;
   };
@@ -19,6 +20,7 @@ const initialState: PhotosState = {
   selectedAlbumPhotos: [],
   selectedAlbumId: undefined,
   status: LoadingState.idle,
+  callCount: 0,
   error: {
     msg: null,
   },
@@ -26,9 +28,21 @@ const initialState: PhotosState = {
 
 export const retrievePhotos = createAsyncThunk(
   "photos/retrievePhotos",
-  async () => {
-    const { data } = await jph.get(`photos`);
-    return data;
+  async (_, thunkApi) => {
+    let data = undefined;
+    try {
+      const currentState: any = thunkApi.getState();
+      if (currentState.photos.callCount === 3) {
+        throw "failed";
+      } else {
+        const response = await jph.get(`photos`);
+        data = response.data;
+        thunkApi.dispatch(incrementCall());
+        return data;
+      }
+    } catch (error) {
+      throw error;
+    }
   }
 );
 
@@ -47,6 +61,9 @@ export const photosSlice = createSlice({
     },
     addPhoto(state, action: PayloadAction<Photo>) {
       state.photos.unshift(action.payload);
+    },
+    incrementCall(state) {
+      state.callCount++;
     },
   },
   extraReducers: {
@@ -67,6 +84,7 @@ export const photosSlice = createSlice({
   },
 });
 
-export const { setAlbumId, addPhoto, getPhotosByAlbumId } = photosSlice.actions;
+export const { setAlbumId, addPhoto, getPhotosByAlbumId, incrementCall } =
+  photosSlice.actions;
 
 export default photosSlice.reducer;
